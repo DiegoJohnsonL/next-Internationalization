@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+}
+
+model Dictionary {
+  key      String
+  value    String
+  language String
+
+  @@id([key, language])
+  @@index([language])
+}
+
+model Product {
+  id                  String              @id @default(cuid())
+  productTypeId       String
+  productCategoryId   String
+  translations        ProductTranslation[]
+
+  productType         ProductType         @relation(fields: [productTypeId], references: [id])
+  productCategory     ProductCategory     @relation(fields: [productCategoryId], references: [id])
+}
+
+model ProductTranslation {
+  id              String   @id @default(cuid())
+  productId       String
+  language        String
+  name            String
+  description     String
+
+  product         Product  @relation(fields: [productId], references: [id])
+
+  @@unique([productId, language])
+}
+
+model ProductType {
+  id                 String               @id @default(cuid())
+  translations       ProductTypeTranslation[]
+
+  products           Product[]
+  productCategories  ProductCategory[]
+}
+
+model ProductTypeTranslation {
+  id                 String       @id @default(cuid())
+  productTypeId      String
+  language           String
+  name               String
+
+  productType        ProductType  @relation(fields: [productTypeId], references: [id])
+
+  @@unique([productTypeId, language])
+}
+
+model ProductCategory {
+  id              String                  @id @default(cuid())
+  productTypeId   String
+  translations    ProductCategoryTranslation[]
+
+  productType     ProductType             @relation(fields: [productTypeId], references: [id])
+  products        Product[]
+}
+
+model ProductCategoryTranslation {
+  id                String           @id @default(cuid())
+  productCategoryId String
+  language          String
+  name              String
+
+  productCategory   ProductCategory  @relation(fields: [productCategoryId], references: [id])
+
+  @@unique([productCategoryId, language])
+}
