@@ -52,7 +52,7 @@ export default async function Home() {
   console.log(dictionary);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between  px-2 md:px-20 py-20">
+    <main className="flex min-h-screen flex-col items-center justify-between px-2 md:px-20 py-20">
        <DictionaryTable data={dictionary} />
     </main>
   );

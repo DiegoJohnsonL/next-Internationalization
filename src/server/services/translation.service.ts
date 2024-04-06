@@ -32,7 +32,7 @@ export async function createTranslation(key: string, value: string, language: st
       // Iterate over the languages we need to translate to
       for (const lang of translateToLanguages) {
         // Translate the value to the target language
-        const translatedValue = await translateText(value, lang);
+        const translatedValue = await translateText(value, lang, language);
         // Store the translated version
         const translated = await prisma.dictionary.create({
           data: { key, value: translatedValue, language: lang },
@@ -53,12 +53,13 @@ export async function createTranslation(key: string, value: string, language: st
 }
 
 
-async function translateText(text: string, targetLang: string) {
+async function translateText(text: string, targetLang: string, src: string) {
     const apiKey = process.env.TRANSLATE_SERVICE_API_KEY;
     const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+    
     const body = {
       q: text,
-      source: 'en',
+      source: src,
       target: targetLang,
       format: 'text'
     };
