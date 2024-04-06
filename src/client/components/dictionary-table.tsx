@@ -312,12 +312,12 @@ export default function DictionaryTable({ data }: TableProps) {
         <div className="inline-flex mt-2">
           <button
             onClick={prevPage}
-            className="px-4 h-10 text-base font-medium text-white border bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-black dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            className="px-4 h-10 text-base font-medium text-black border bg-white rounded-l dark:bg-black dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
             Prev
           </button>
           <button
             onClick={nextPage}
-            className="px-4 h-10 text-base font-medium text-white bg-gray-800 border border-gray-700 rounded-r hover:bg-gray-900 dark:bg-black dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            className="px-4 h-10 text-base font-medium text-black border bg-white rounded-r dark:bg-black dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
             Next
           </button>
         </div>
